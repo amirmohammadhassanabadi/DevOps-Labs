@@ -1,0 +1,28 @@
+services:
+  python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+    networks:
+      - app-net
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+    networks:
+      - app-net
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - app-net
+    ports:
+      - "80:80"
+networks:
+  app-net:
+    driver: bridge
+    external: false
