@@ -1,0 +1,21 @@
+stages:
+  - build
+  - deploy
+
+build-stage:
+  stage: build
+  script:
+    - docker build -t app:v1 .
+  tags:
+    - shell-only
+  only: 
+    - main
+
+deploy-stage:
+  stage: deploy
+  script:
+    - docker run -d --name application -p 3001:3001 app:v1
+  tags:
+    - shell-only
+  only: 
+    - main
