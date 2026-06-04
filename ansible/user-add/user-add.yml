@@ -1,0 +1,12 @@
+- name: user-add
+  hosts: ubuntu-servers
+  gather_facts: no
+  become: yes
+  tasks:
+  - name: adding ansible user
+    ansible.builtin.user:
+      name: ansible-test
+      shell: /bin/bash
+      home: /home/ansible-test
+      password: 123
+      comment: "a user for testing ansible"
