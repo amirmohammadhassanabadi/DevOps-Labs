@@ -1,0 +1,17 @@
+---
+- name: Backup Cisco Switch Configurations
+  hosts: cisco_switches
+  gather_facts: no
+
+  tasks:
+    - name: "Task 1: Retrieve Running Configuration"
+      cisco.ios.ios_command:
+        commands:
+          - show running-config
+      register: config_output
+
+    - name: "Task 2: Save to file"
+      delegate_to: localhost
+      ansible.builtin.copy:
+        content: '{{ config_output.stdout[0] }}'
+        dest: "./backups/{{ inventory_hostname }}_running_config.txt"
